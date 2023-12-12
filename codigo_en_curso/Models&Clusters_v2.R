@@ -404,6 +404,7 @@ run_model2 <- function(myreplications=1, N=100) {
   return(distributions)
 }
 
+############# N=100 ###########
 replications<-100
 dataModel2 <- run_model2(replications,100)
 dataModel2_ <- data.frame(matrix(ncol = 84, nrow = 0))
@@ -414,41 +415,6 @@ for (d in 2:replications){
   dataModel2_ <- rbind(dataModel2_,dataModel2[dataModel2$replicationNumber==d,]$frequency)
 }
 colnames(dataModel2_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
-
-
-library(dtw)
-distMatrix <- dist(dataModel2_, method='DTW')
-hc <- hclust(distMatrix, method="average")
-observedLabels <- rownames(dataModel2_)
-plot(hc, labels=observedLabels, main="")
-
-#num clusters selected
-clustnum <- 3
-clusterCut <- cutree(hc, clustnum)
-table(clusterCut) #Percentaje of replications on each cluster.  94  3  3 
-
-#selecciono la replicacion a imprimir
-#1, 8, 38 
-
-rep=38
-
-setEPS()
-postscript("Model2_cluster3_4perc.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=contribution)) + 
-  geom_point(size=20, shape=15, aes(colour = frequency)) + 
-  #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
-  scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
-  scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
-  geom_line(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_point(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel2[dataModel2$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
-dev.off()
-
-
-
 
 
 ############# N=1000 ###########
@@ -462,36 +428,6 @@ for (d in 2:replications){
   dataModel2_1000_ <- rbind(dataModel2_1000_,dataModel2_1000[dataModel2_1000$replicationNumber==d,]$frequency)
 }
 colnames(dataModel2_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
-
-
-distMatrix <- dist(dataModel2_1000_, method='DTW')
-hc <- hclust(distMatrix, method="average")
-observedLabels <- rownames(dataModel2_1000_)
-plot(hc, labels=observedLabels, main="")
-
-#num clusters selected
-clustnum <- 2
-clusterCut <- cutree(hc, clustnum)
-table(clusterCut) #Percentaje of replications on each cluster.  99  1 
-
-rep=1
-
-setEPS()
-postscript("Model2_1000_cluster1_98perc.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
-  geom_point(size=20, shape=15, aes(colour = frequency)) + 
-  #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
-  scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
-  scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
-  geom_line(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_point(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
-dev.off()
-
-
 
 
 #Scatterplots
@@ -521,6 +457,191 @@ ggplot(dataModel2_1000, aes(x=round, y=contribution)) +
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
   theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+dev.off()
+
+
+## CLUSTER ANALYSIS
+############# N=100 ###########
+
+#Utilizo los datos con nombre acabado en _ para clusterizar
+dist_mat <- dist(dataModel2_, method = 'euclidean')
+hclust_avg <- hclust(dist_mat, method = 'average')
+plot(hclust_avg)
+
+#observo los grupos en el dedrograma para obtener k
+
+suppressPackageStartupMessages(library(dendextend))
+avg_dend_obj <- as.dendrogram(hclust_avg)
+avg_col_dend <- color_branches(avg_dend_obj, k = 6)
+plot(avg_col_dend)
+
+clusters <- cutree(hclust_avg, k = 6)
+table(clusters)
+
+
+clusterdata <- dataModel2[dataModel2$replicationNumber %in% which(clusters==2),]
+
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("Examples_Model2_100_cluster1_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
+dev.off()
+
+#### Resumen de 15 para el SI
+
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("15Examples_Model2_100_cluster6_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
+dev.off()
+
+
+## Replicación que representa cada cluster
+rep=sample_indexes[2]
+
+setEPS()
+postscript("Model2_100_cluster2_rep77.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+ggplot(dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=contribution)) + 
+  geom_point(size=20, shape=15, aes(colour = frequency)) + 
+  #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+  scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+  scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  geom_line(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
+  geom_point(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
+  geom_text(data=dataModel2[dataModel2$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
+theme_bw() +
+  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+dev.off()
+
+
+############# N=1000 ###########
+
+#Utilizo los datos con nombre acabado en _ para clusterizar
+dist_mat <- dist(dataModel2_1000_, method = 'euclidean')
+hclust_avg <- hclust(dist_mat, method = 'average')
+plot(hclust_avg)
+
+#observo los grupos en el dedrograma para obtener k
+
+suppressPackageStartupMessages(library(dendextend))
+avg_dend_obj <- as.dendrogram(hclust_avg)
+avg_col_dend <- color_branches(avg_dend_obj, k = 2)
+plot(avg_col_dend)
+
+clusters <- cutree(hclust_avg, k = 2)
+table(clusters)
+
+
+clusterdata <- dataModel2_1000[dataModel2_1000$replicationNumber %in% which(clusters==1),]
+
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("Examples_Model2_1000_cluster1_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
+dev.off()
+
+#### Resumen de 15 para el SI
+
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("15Examples_Model2_1000_cluster1_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
+dev.off()
+
+
+## Replicación que representa cada cluster
+rep=sample_indexes[1]
+
+setEPS()
+postscript("Model2_1000_cluster2_rep36.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+ggplot(dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
+  geom_point(size=20, shape=15, aes(colour = frequency)) + 
+  #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+  scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+  scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  geom_line(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
+  geom_point(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
+  geom_text(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
+theme_bw() +
+  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
