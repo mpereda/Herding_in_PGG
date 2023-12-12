@@ -3,14 +3,15 @@
 
 
 
-
-# ver sección "1 de noviembre me quedo aquí"
-
-
-
-################################## Noviembre 2023 #############
-
 ## Actualizo la técnica de clustering a clustering jerárquico aglomerativo con average linkage (hay que hacer sufifientes grupos)
+# 
+# Para cada modelo hay que hacer análisis clust de hierarchical, con bastantes grupos para que se agrupen bien los patrones
+# Veo los patrones en una figura con todos, pero al supplementary subo una de tamaño 15 ejemplos o menos (las de menos, edito el pdf)
+# Comento en el texto y para las representativas, muestro un ejemplo como figura sola
+# Fisher test ya no los incluyo. Paso el código a Deprecated.R
+
+
+
 
 rm(list=ls(all=TRUE))
 myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/histogramsOfHistograms"
@@ -222,55 +223,84 @@ for (d in 2:replications){
 }
 colnames(dataModel1_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
+dist_mat <- dist(dataModel1_1000_, method = 'euclidean')
+hclust_avg <- hclust(dist_mat, method = 'average')
+plot(hclust_avg)
+
+#observo los grupos en el dedrograma para obtener k
+
+suppressPackageStartupMessages(library(dendextend))
+avg_dend_obj <- as.dendrogram(hclust_avg)
+avg_col_dend <- color_branches(avg_dend_obj, k = 2)
+plot(avg_col_dend)
+
+clusters <- cutree(hclust_avg, k = 2)
+table(clusters)
 
 
+# Genero los ejemplos de cada cluster
+
+clusterdata <- dataModel1_1000[dataModel1_1000$replicationNumber %in% which(clusters==2),]
+
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("Examples_Model1_1000_cluster1_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
+dev.off()
 
 
-################# 1 de noviembre me quedo aquí
+#### Resumen de 15 para el SI
 
-# Para cada modelo hay que hacer análisis clust de hierarchical, con bastantes grupos para que se agrupen bien los patrones
-# Veo los patrones en una figura con todos, pero al supplementary subo una de tamaño 15 ejemplos o menos (las de menos, edito el pdf)
-# Comento en el texto y para las representativas, muestro un ejemplo como figura sola
-# Fisher test solo contra el cluster que se parezca, contra PGG_H, PGG_H2, y PGG100
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
 
-#repito todo con 1000 agentes
-
-
-
-###################################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("15Examples_Model1_1000_cluster2_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
+dev.off()
 
 
-
-distMatrix <- dist(dataModel1_1000_, method='DTW')
-hc <- hclust(distMatrix, method="average")
-observedLabels <- rownames(dataModel1_1000_)
-plot(hc, labels=observedLabels, main="")
-
-#num clusters selected
-clustnum <- 2
-clusterCut <- cutree(hc, clustnum)
-table(clusterCut) #Percentaje of replications on each cluster.  99  1 
-
-rep=1
+## Replicación que representa cada cluster
+rep=38
 
 setEPS()
-postscript("Model1_1000_cluster1_99perc.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model1_1000_cluster1_rep38.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -287,8 +317,8 @@ dev.off()
 
 # Scatterplot all
 setEPS()
-postscript("Scatter_Bayesianos1000_100rep.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel1_1000, aes(x=round, y=contribution)) + 
+postscript("Scatter_Bayesianos100_100rep.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+ggplot(dataModel1, aes(x=round, y=contribution)) + 
   #geom_point(size=2, shape=16, aes(colour = frequency)) + 
   geom_jitter(size=0.8, width = 0.4, height = 0.7, aes(colour = frequency), alpha = 1) +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
@@ -296,95 +326,6 @@ ggplot(dataModel1_1000, aes(x=round, y=contribution)) +
   scale_x_continuous(limits=c(0, 15), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
-
-
-## Fisher tests
-
-#Using data from real humans from the paper
-counts_todas_rondas<-read.csv("/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/datos/counts_todas_rondas.csv") #DATA FROM ZENODO https://zenodo.org/record/2590686
-dist_agregada_PGG_H<-dcast(counts_todas_rondas[counts_todas_rondas$treatment=="PGG_H",], round ~ contribution, value.var = "COUNT", fun.aggregate=sum)
-colnames(dist_agregada_PGG_H)<-c("round","c0","c2","c4","c6","c8","c10")
-
-
-# Conducting r x t tests (r replications, t rounds)
-tests <- data.frame(matrix(ncol = 4, nrow = 0))
-colnames(tests)[1]<-"round"
-colnames(tests)[2]<-"replication"
-colnames(tests)[3]<-"pvalue" # We use LLR p-value https://cran.r-project.org/web/packages/XNomial/vignettes/XNomial.html
-colnames(tests)[4]<-"different" #p-value < 0.001
-indice<-1 #just to store the data
-final_round <- 14
-
-for (t in 1:final_round){
-  for (r in 1:min(10,max(dataModel1$replicationNumber))){ #10 replications at most to save computational power,
-    dist_agregada1 <- dcast(dataModel1[dataModel1$round==t & dataModel1$replicationNumber==r,1:3], round ~ contribution, value.var = "frequency", fun.aggregate=sum)
-    colnames(dist_agregada1)<-c("round","c0","c2","c4","c6","c8","c10")
-    dist_agregada1<-dist_agregada1*100 #N 100 agents
-    dist_agregada1$round <- dist_agregada1$round/100
-    # We do not run Chi Square tests because samples are small and so the calculation of p-values may be incorrect
-    #chisq.test(x=unlist(dist_agregada_PGG_H[dist_agregada_PGG_H$round==t,-1]),y=unlist(dist_agregada1[dist_agregada1$round==t,-1]))
-    #We use Fisher exact test https://cran.r-project.org/web/packages/XNomial/vignettes/XNomial.html
-    # p-value>alpha means the data fit the model
-    # We need at least one data in each category, so I approximate the p-value ensuring all categories have at least one data
-    dist_agregada1<-replace(dist_agregada1, dist_agregada1==0, 1)
-    
-    tests[indice,]$round <- t
-    tests[indice,]$replication <- r
-    invisible(capture.output(tests[indice,]$pvalue <- xmulti(unlist(dist_agregada_PGG_H[dist_agregada_PGG_H$round==t,-1]),unlist(dist_agregada1[dist_agregada1$round==t,-1]))[4])) #invisible(capture.output to avoid function printing
-    tests[indice,]$different <- as.numeric(tests[indice,]$pvalue < 0.001) #simulation data does not fit experimental results
-    indice<- indice+1
-  }
-}
-
-summarytests <- dcast(tests[,-3], round ~ different, value.var = "different", fun.aggregate=sum)
-summarytests<-summarytests[,-2]
-colnames(summarytests)<-c('round','different')
-summarytests$percentagediff <- summarytests$different / min(10,max(dataModel1$replicationNumber))
-summarytests
-round(mean(summarytests$percentagediff),2)
-round(sd(summarytests$percentagediff),2)
-
-#PPGH_2
-dist_agregada_PGG_H2<-dcast(counts_todas_rondas[counts_todas_rondas$treatment=="PGG_H2",], round ~ contribution, value.var = "COUNT", fun.aggregate=sum)
-colnames(dist_agregada_PGG_H2)<-c("round","c0","c2","c4","c6","c8","c10")
-
-
-# Conducting r x t tests (r replications, t rounds)
-tests <- data.frame(matrix(ncol = 4, nrow = 0))
-colnames(tests)[1]<-"round"
-colnames(tests)[2]<-"replication"
-colnames(tests)[3]<-"pvalue" # We use LLR p-value https://cran.r-project.org/web/packages/XNomial/vignettes/XNomial.html
-colnames(tests)[4]<-"different" #p-value < 0.001
-indice<-1 #just to store the data
-final_round <- 14
-
-for (t in 1:final_round){
-  for (r in 1:min(10,max(dataModel1$replicationNumber))){ #10 replications at most to save computational power,
-    dist_agregada1 <- dcast(dataModel1[dataModel1$round==t & dataModel1$replicationNumber==r,1:3], round ~ contribution, value.var = "frequency", fun.aggregate=sum)
-    colnames(dist_agregada1)<-c("round","c0","c2","c4","c6","c8","c10")
-    dist_agregada1<-dist_agregada1*100 #N 100 agents
-    dist_agregada1$round <- dist_agregada1$round/100
-    # We do not run Chi Square tests because samples are small and so the calculation of p-values may be incorrect
-    #chisq.test(x=unlist(dist_agregada_PGG_H[dist_agregada_PGG_H$round==t,-1]),y=unlist(dist_agregada1[dist_agregada1$round==t,-1]))
-    #We use Fisher exact test https://cran.r-project.org/web/packages/XNomial/vignettes/XNomial.html
-    # We need at least one data in each category, so I approximate the p-value ensuring al categories have at least one data
-    dist_agregada1<-replace(dist_agregada1, dist_agregada1==0, 1)
-    
-    tests[indice,]$round <- t
-    tests[indice,]$replication <- r
-    invisible(capture.output(tests[indice,]$pvalue <- xmulti(unlist(dist_agregada_PGG_H2[dist_agregada_PGG_H2$round==t,-1]),unlist(dist_agregada1[dist_agregada1$round==t,-1]))[4])) #invisible(capture.output to avoid function printing
-    tests[indice,]$different <- as.numeric(tests[indice,]$pvalue < 0.001)
-    indice<- indice+1
-  }
-}
-
-summarytests <- dcast(tests[,-3], round ~ different, value.var = "different", fun.aggregate=sum)
-summarytests<-summarytests[,-2]
-colnames(summarytests)<-c('round','different')
-summarytests$percentagediff <- summarytests$different / min(10,max(dataModel1$replicationNumber))
-summarytests
-round(mean(summarytests$percentagediff),2)
-round(sd(summarytests$percentagediff),2)
 
 
 
