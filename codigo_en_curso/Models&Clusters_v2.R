@@ -125,10 +125,11 @@ clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel1[dataModel1$replicationNumber %in% which(clusters==3),]
+clusterdata <- dataModel1[dataModel1$replicationNumber %in% which(clusters==2),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
 
 lista_plots <- list()
 replication_number<-unique(sample$replicationNumber)
@@ -181,10 +182,11 @@ dev.off()
 
 
 ## Replicación que representa cada cluster
+unique(clusterdata$replicationNumber)
 rep=12
 
 setEPS()
-postscript("Model1_100_cluster1_rep12.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model1_100_cluster2_rep12.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -535,7 +537,7 @@ dev.off()
 
 
 ## Replicación que representa cada cluster
-rep=sample_indexes[2]
+rep=sample_indexes[10]
 
 setEPS()
 postscript("Model2_100_cluster2_rep77.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
@@ -667,7 +669,7 @@ run_model3 <- function(myreplications=1, N=100) {
   decisiones <- c(0,2,4,6,8,10) # For figure axis
   final_round <- 14             # Number of rounds
   #N <- 100                      # Number of agents
-  n_prime=N-round(percentage_full_def,0)-round(percentage_full_cop,0) # Bayesian agents
+  n_prime=N-round(percentage_full_def,2)*100-round(percentage_full_cop,2)*100 # Bayesian agents
   round(percentage_full_def*N,0) #Full defector
   round(percentage_full_cop*N,0) #Full cooperators
   vector_alfa_inicial <- as.numeric(dataprior) 
@@ -687,7 +689,7 @@ run_model3 <- function(myreplications=1, N=100) {
     for (t in 1:final_round){
       # Agents decide
       x<-rcat(n_prime, vector_alfa)
-      x<-c(x,rep(1,round(percentage_full_def,0)), rep(6, round(percentage_full_cop,0)))  # Category 1 y donate 0, category 6 is donate 10
+      x<-c(x,rep(1,round(percentage_full_def,2)*100), rep(6, round(percentage_full_cop,2)*100))  # Category 1 y donate 0, category 6 is donate 10
       
       #Posterior distribution update
       vector_c <- c(0,0,0,0,0,0)
@@ -798,7 +800,7 @@ clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==6),]
+clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==1),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -988,7 +990,7 @@ run_model4 <- function(myreplications=1, N=100) {
   decisiones <- c(0,2,4,6,8,10) # For figure axis
   final_round <- 14             # Number of rounds
   #N <- 100                     # Number of agents
-  n_prime=N-round(percentage_full_def,0)-round(percentage_full_cop,0) # Bayesian agents
+  n_prime=N-round(percentage_full_def,2)*100-round(percentage_full_cop,2)*100 # Bayesian agents
   round(percentage_full_def*N,0) #Full defector
   round(percentage_full_cop*N,0) #Full cooperators
   vector_alfa_inicial <- c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5) #Dirichlet Jeffreys Prior
@@ -1008,7 +1010,7 @@ run_model4 <- function(myreplications=1, N=100) {
     for (t in 1:final_round){
       # Agents decide
       x<-rcat(n_prime, vector_alfa)
-      x<-c(x,rep(1,round(percentage_full_def,0)), rep(6, round(percentage_full_cop,0)))  # Category 1 y donate 0, category 6 is donate 10
+      x<-c(x,rep(1,round(percentage_full_def,2)*100), rep(6, round(percentage_full_cop,2)*100))  # Category 1 y donate 0, category 6 is donate 10
       
       #Posterior distribution update
       vector_c <- c(0,0,0,0,0,0)
