@@ -1039,7 +1039,7 @@ colnames(dataModel4_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2'
 #Scatterplots
 setEPS()
 postscript("Scatter_Bayesianos_JeffreysPrior_Fulls_100_100rep.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel3, aes(x=round, y=contribution)) + 
+ggplot(dataModel4, aes(x=round, y=contribution)) + 
   #geom_point(size=2, shape=16, aes(colour = frequency)) + 
   geom_jitter(size=0.8, width = 0.4, height = 0.7, aes(colour = frequency), alpha = 1) +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
@@ -1053,7 +1053,7 @@ dev.off()
 
 setEPS()
 postscript("Scatter_Bayesianos_JeffreysPrior_Fulls_1000_100rep.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel3_1000, aes(x=round, y=contribution)) + 
+ggplot(dataModel4_1000, aes(x=round, y=contribution)) + 
   #geom_point(size=2, shape=16, aes(colour = frequency)) + 
   geom_jitter(size=0.8, width = 0.4, height = 0.7, aes(colour = frequency), alpha = 1) +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
@@ -1078,14 +1078,14 @@ plot(hclust_avg)
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
-avg_col_dend <- color_branches(avg_dend_obj, k = 4)
+avg_col_dend <- color_branches(avg_dend_obj, k = 6)
 plot(avg_col_dend)
 
-clusters <- cutree(hclust_avg, k = 4)
+clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel4[dataModel4$replicationNumber %in% which(clusters==4),]
+clusterdata <- dataModel4[dataModel4$replicationNumber %in% which(clusters==2),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -1108,7 +1108,7 @@ for (i in replication_number){
   indice<-indice+1
 }
 setEPS()
-postscript("Examples_Model4_100_cluster1_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
+postscript("Examples_Model4_100_cluster2_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
@@ -1135,7 +1135,7 @@ for (i in replication_number){
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model4_100_cluster4_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model4_100_cluster6_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
 
@@ -1144,7 +1144,7 @@ dev.off()
 rep=sample_indexes[1]
 
 setEPS()
-postscript("Model4_100_cluster2_rep90.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model4_100_cluster5.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -1170,14 +1170,14 @@ plot(hclust_avg)
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
-avg_col_dend <- color_branches(avg_dend_obj, k = 4)
+avg_col_dend <- color_branches(avg_dend_obj, k = 2)
 plot(avg_col_dend)
 
-clusters <- cutree(hclust_avg, k = 4)
+clusters <- cutree(hclust_avg, k = 2)
 table(clusters)
 
 
-clusterdata <- dataModel4_1000[dataModel4_1000$replicationNumber %in% which(clusters==4),]
+clusterdata <- dataModel4_1000[dataModel4_1000$replicationNumber %in% which(clusters==2),]
 
 #### Resumen de 15 para el SI
 
@@ -1202,7 +1202,7 @@ for (i in replication_number){
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model4_1000_cluster1_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model4_1000_cluster2_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
 
@@ -1211,7 +1211,7 @@ dev.off()
 rep=sample_indexes[1]
 
 setEPS()
-postscript("Model4_1000_cluster1_rep43.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model4_1000_cluster2.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
