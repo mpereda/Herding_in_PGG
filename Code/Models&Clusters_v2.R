@@ -1085,7 +1085,7 @@ clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel4[dataModel4$replicationNumber %in% which(clusters==2),]
+clusterdata <- dataModel4[dataModel4$replicationNumber %in% which(clusters==1),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -1141,11 +1141,11 @@ dev.off()
 
 
 ## Replicación que representa cada cluster
-rep=sample_indexes[1]
+rep=sample_indexes[2]
 
 setEPS()
-postscript("Model4_100_cluster5.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
-ggplot(dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=contribution)) + 
+postscript("Model4_100_cluster1_rep61.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+ggplot(dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
