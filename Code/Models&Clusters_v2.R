@@ -1,17 +1,5 @@
 # Models and clusters
 
-### 12 de diciembre, falta hacer lo mismo que en el B, para el C y el D. El paper también hay que actualizarlo
-
-
-## Actualizo la técnica de clustering a clustering jerárquico aglomerativo con average linkage (hay que hacer sufifientes grupos)
-# 
-# Para cada modelo hay que hacer análisis clust de hierarchical, con bastantes grupos para que se agrupen bien los patrones
-# Veo los patrones en una figura con todos, pero al supplementary subo una de tamaño 15 ejemplos o menos (las de menos, edito el pdf)
-# Comento en el texto y para las representativas, muestro un ejemplo como figura sola
-# Fisher test ya no los incluyo. Paso el código a Deprecated.R
-
-
-
 
 rm(list=ls(all=TRUE))
 myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/histogramsOfHistograms"
@@ -95,7 +83,7 @@ run_model1 <- function(myreplications=2, N=100) {
 
 
 ############# N=100 ###########
-# Genero datasets de cada modelo con n replicaciones para hacer clustering de tipos de comportamientos
+# I generate datasets of each model with n replications to cluster behavioural types.
 replications<-100
 dataModel1 <- run_model1(replications,100)
 dataModel1_ <- data.frame(matrix(ncol = 84, nrow = 0))
@@ -108,13 +96,13 @@ for (d in 2:replications){
 colnames(dataModel1_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 
 dist_mat <- dist(dataModel1_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+# I look at the groups in the dedrogram to obtain k clusters
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -153,7 +141,7 @@ postscript("Examples_Model1_100_cluster3_hierarchicalClust_average.eps", height=
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -181,7 +169,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 unique(clusterdata$replicationNumber)
 rep=12
 
@@ -229,7 +217,7 @@ dist_mat <- dist(dataModel1_1000_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -240,8 +228,7 @@ clusters <- cutree(hclust_avg, k = 2)
 table(clusters)
 
 
-# Genero los ejemplos de cada cluster
-
+# I generate examples of each cluster
 clusterdata <- dataModel1_1000[dataModel1_1000$replicationNumber %in% which(clusters==2),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
@@ -270,7 +257,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRU
 dev.off()
 
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -298,7 +285,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=38
 
 setEPS()
@@ -465,12 +452,12 @@ dev.off()
 ## CLUSTER ANALYSIS
 ############# N=100 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel2_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -508,7 +495,7 @@ postscript("Examples_Model2_100_cluster1_hierarchicalClust_average.eps", height=
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -536,7 +523,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[10]
 
 setEPS()
@@ -557,12 +544,12 @@ dev.off()
 
 ############# N=1000 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel2_1000_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -600,7 +587,7 @@ postscript("Examples_Model2_1000_cluster1_hierarchicalClust_average.eps", height
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -628,7 +615,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[1]
 
 setEPS()
@@ -784,12 +771,12 @@ dev.off()
 ## CLUSTER ANALYSIS
 ############# N=100 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel3_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -827,7 +814,7 @@ postscript("Examples_Model3_100_cluster1_hierarchicalClust_average.eps", height=
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -855,7 +842,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[1]
 
 setEPS()
@@ -876,12 +863,12 @@ dev.off()
 
 ############# N=1000 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel3_1000_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -894,7 +881,7 @@ table(clusters)
 
 clusterdata <- dataModel3_1000[dataModel3_1000$replicationNumber %in% which(clusters==4),]
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -922,7 +909,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[1]
 
 setEPS()
@@ -1069,12 +1056,12 @@ dev.off()
 ## CLUSTER ANALYSIS
 ############# N=100 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel4_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -1112,7 +1099,7 @@ postscript("Examples_Model4_100_cluster2_hierarchicalClust_average.eps", height=
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -1140,7 +1127,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[2]
 
 setEPS()
@@ -1161,12 +1148,12 @@ dev.off()
 
 ############# N=1000 ###########
 
-#Utilizo los datos con nombre acabado en _ para clusterizar
+#I use data with name ending in _ to cluster
 dist_mat <- dist(dataModel4_1000_, method = 'euclidean')
 hclust_avg <- hclust(dist_mat, method = 'average')
 plot(hclust_avg)
 
-#observo los grupos en el dedrograma para obtener k
+#I look at the groups in the dedrogram to obtain k clusters.
 
 suppressPackageStartupMessages(library(dendextend))
 avg_dend_obj <- as.dendrogram(hclust_avg)
@@ -1179,7 +1166,7 @@ table(clusters)
 
 clusterdata <- dataModel4_1000[dataModel4_1000$replicationNumber %in% which(clusters==2),]
 
-#### Resumen de 15 para el SI
+#### Summary of 15 replications for the Supplementary Material
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -1207,7 +1194,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRU
 dev.off()
 
 
-## Replicación que representa cada cluster
+## I print a replication as an example
 rep=sample_indexes[1]
 
 setEPS()
@@ -1224,3 +1211,16 @@ ggplot(dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=
 theme_bw() +
   theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
+
+
+
+#### Export data for the repositoy
+write.csv(dataModel1, "dataModel1.csv", row.names=TRUE)
+write.csv(dataModel1_1000, "dataModel1_1000.csv", row.names=TRUE)
+write.csv(dataModel2, "dataModel2", row.names=TRUE)
+write.csv(dataModel2_1000, "dataModel2_1000.csv", row.names=TRUE)
+write.csv(dataModel3, "dataModel3", row.names=TRUE)
+write.csv(dataModel3_1000, "dataModel3_1000.csv", row.names=TRUE)
+write.csv(dataModel4, "dataModel4", row.names=TRUE)
+write.csv(dataModel4_1000, "dataModel4_1000.csv", row.names=TRUE)
+
