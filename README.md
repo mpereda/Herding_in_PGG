@@ -1,6 +1,7 @@
 # Herding_in_PGG
 This repository contains the code to replicate the experiments and results presented in the paper "Herd Behaviour in Public Goods Games". 
 
+# Contents
 The "Code" folder contains the code of the four models in the papers as well as the code to replicate all the figures in the paper.
 
 The "Simulation Data" folder contains the raw data resulting from the simulations. The data is organised in 5 columns:
