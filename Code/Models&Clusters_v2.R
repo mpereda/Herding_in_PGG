@@ -1217,10 +1217,10 @@ dev.off()
 #### Export data for the repositoy
 write.csv(dataModel1, "dataModel1.csv", row.names=TRUE)
 write.csv(dataModel1_1000, "dataModel1_1000.csv", row.names=TRUE)
-write.csv(dataModel2, "dataModel2", row.names=TRUE)
+write.csv(dataModel2, "dataModel2.csv", row.names=TRUE)
 write.csv(dataModel2_1000, "dataModel2_1000.csv", row.names=TRUE)
-write.csv(dataModel3, "dataModel3", row.names=TRUE)
+write.csv(dataModel3, "dataModel3.csv", row.names=TRUE)
 write.csv(dataModel3_1000, "dataModel3_1000.csv", row.names=TRUE)
-write.csv(dataModel4, "dataModel4", row.names=TRUE)
+write.csv(dataModel4, "dataModel4.csv", row.names=TRUE)
 write.csv(dataModel4_1000, "dataModel4_1000.csv", row.names=TRUE)
 
