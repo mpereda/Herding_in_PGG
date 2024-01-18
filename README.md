@@ -13,7 +13,7 @@ The "Simulation Data" folder contains the raw data resulting from the simulation
 
 
 # Citation
-The paper is still unpublished. Citation details will be updated upon publication.
+The paper is not published in a scientific journal yet. The preprint version can be accessed in Arxiv https://doi.org/10.48550/arXiv.2401.08428
 
 # Licence
 This repository is distributed under the MIT License. See the LICENSE file for details.
