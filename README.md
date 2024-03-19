@@ -2,7 +2,7 @@
 This repository contains the code to replicate the experiments and results presented in the paper "Herd Behaviour in Public Goods Games". 
 
 # Contents
-The "Code" folder contains the code of the four models in the papers as well as the code to replicate all the figures in the paper.
+The "Code" folder contains the code of the four models in the paper as well as the code to replicate all the figures in the paper.
 
 The "Simulation Data" folder contains the raw data resulting from the simulations. The data is organised in 5 columns:
   - round: Public Goods Game round 
@@ -13,7 +13,7 @@ The "Simulation Data" folder contains the raw data resulting from the simulation
 
 
 # Citation
-The paper is still unpublished. Citation details will be updated upon publication.
+The paper is not published in a scientific journal yet. The preprint version can be accessed in Arxiv https://doi.org/10.48550/arXiv.2401.08428
 
 # Licence
 This repository is distributed under the MIT License. See the LICENSE file for details.
