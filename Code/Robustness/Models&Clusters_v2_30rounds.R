@@ -2,7 +2,7 @@
 
 
 rm(list=ls(all=TRUE))
-myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/Robustness"
+myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/Herding_in_PGG/Code/Robustness"
 
 setwd(myWD)
 
@@ -20,13 +20,13 @@ set.seed(5)
 
 
 ########### MODEL A: Bayesian agents with non-informative prior ############################################
-run_model1 <- function(myreplications=2, N=100) {
+run_model1 <- function(myreplications=2, N=100, r=14) {
   #N Number of agents
   
   print(myreplications)
   
   decisiones <- c(0,2,4,6,8,10) # For figure axis
-  final_round <- 30             # Number of rounds
+  final_round <- r             # Number of rounds
   vector_alfa_inicial <- c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5) #Dirichlet Jeffreys Prior
   
   # Structure to store the distributions of decisions per round
@@ -85,7 +85,7 @@ run_model1 <- function(myreplications=2, N=100) {
 ############# N=100 ###########
 # I generate datasets of each model with n replications to cluster behavioural types.
 replications<-100
-dataModel1 <- run_model1(replications,100)
+dataModel1 <- run_model1(replications,100,30)
 dataModel1_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel1_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -133,7 +133,7 @@ for (i in replication_number){
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -155,16 +155,16 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model1_100_cluster3_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model1_100_cluster6_hierarchicalClust_average_30rounds.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
 
@@ -180,12 +180,12 @@ ggplot(dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=contributi
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel1[dataModel1$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -198,12 +198,12 @@ ggplot(dataModel1, aes(x=round, y=contribution)) +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
   scale_x_continuous(limits=c(0, 15), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 ############# N=1000 ###########
 replications<-100
-dataModel1_1000 <- run_model1(replications,1000)
+dataModel1_1000 <- run_model1(replications,1000,30)
 dataModel1_1000_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel1_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -243,12 +243,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -271,12 +271,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -295,12 +295,12 @@ ggplot(dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -313,7 +313,7 @@ ggplot(dataModel1, aes(x=round, y=contribution)) +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
   scale_x_continuous(limits=c(0, 15), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -334,12 +334,12 @@ participants_number<-nrow(subset_data)
 dataprior<- tapply(subset_data$round_number, subset_data$player_contribution, sum)/participants_number #average of all experiments
 
 
-run_model2 <- function(myreplications=1, N=100) {
+run_model2 <- function(myreplications=1, N=100, r=14) {
   #N Number of agents
   
   ### PGG 14 rondas
   decisiones <- c(0,2,4,6,8,10) # For figure axis
-  final_round <- 14             # Number of rounds
+  final_round <- r             # Number of rounds
   vector_alfa_inicial <- as.numeric(dataprior) 
   
   # Structure to store the distributions of decisions per round
@@ -395,7 +395,7 @@ run_model2 <- function(myreplications=1, N=100) {
 
 ############# N=100 ###########
 replications<-100
-dataModel2 <- run_model2(replications,100)
+dataModel2 <- run_model2(replications,100,30)
 dataModel2_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel2_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -408,7 +408,7 @@ colnames(dataModel2_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4
 
 ############# N=1000 ###########
 replications<-100
-dataModel2_1000 <- run_model2(replications,1000)
+dataModel2_1000 <- run_model2(replications,1000,30)
 dataModel2_1000_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel2_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -431,7 +431,7 @@ ggplot(dataModel2, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 setEPS()
@@ -445,7 +445,7 @@ ggplot(dataModel2_1000, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -468,7 +468,7 @@ clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel2[dataModel2$replicationNumber %in% which(clusters==2),]
+clusterdata <- dataModel2[dataModel2$replicationNumber %in% which(clusters==6),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -482,16 +482,16 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
-postscript("Examples_Model2_100_cluster1_hierarchicalClust_average.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
+postscript("Examples_Model2_100_cluster1_hierarchicalClust_average_30rounds.eps", height=4*8, width=8.5*4, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRUE))
 dev.off()
 
@@ -509,16 +509,16 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model2_100_cluster6_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model2_100_cluster6_hierarchicalClust_average_30rounds.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
 
@@ -533,12 +533,12 @@ ggplot(dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=contributi
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel2[dataModel2$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -574,12 +574,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -601,12 +601,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -625,12 +625,12 @@ ggplot(dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -652,9 +652,9 @@ coops <- dataset[dataset$player_contribution==10,] #full cooperators
 percentage_full_cop<-sum(as.numeric(table(coops$id))>11)/participants_number #Donate 10 more than 80% rounds
 
 
-run_model3 <- function(myreplications=1, N=100) {
+run_model3 <- function(myreplications=1, N=100, r=14) {
   decisiones <- c(0,2,4,6,8,10) # For figure axis
-  final_round <- 14             # Number of rounds
+  final_round <- r             # Number of rounds
   #N <- 100                      # Number of agents
   n_prime=N-round(percentage_full_def,2)*100-round(percentage_full_cop,2)*100 # Bayesian agents
   round(percentage_full_def*N,2)*100 #Full defector
@@ -715,7 +715,7 @@ run_model3 <- function(myreplications=1, N=100) {
 
 ############# N=100 ###########
 replications<-100
-dataModel3 <- run_model3(replications,100)
+dataModel3 <- run_model3(replications,100,30)
 dataModel3_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel3_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -727,7 +727,7 @@ colnames(dataModel3_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4
 
 ############# N=1000 ###########
 replications<-100
-dataModel3_1000 <- run_model3(replications,1000)
+dataModel3_1000 <- run_model3(replications,1000,30)
 dataModel3_1000_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel3_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -750,7 +750,7 @@ ggplot(dataModel3, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 setEPS()
@@ -764,7 +764,7 @@ ggplot(dataModel3_1000, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -801,12 +801,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -828,18 +828,51 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model3_100_cluster4_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model3_100_cluster4_hierarchicalClust_average_30rounds.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
+
+
+### Plots for 100 rounds
+clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==4),]
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
+
+lista_plots <- list()
+replication_number<-unique(sample$replicationNumber)
+indice<-1
+for (i in replication_number){
+  lista_plots[[indice]]<-ggplot(sample[sample$replicationNumber==i,], aes(x=round, y=contribution)) + 
+    geom_point(size=20, shape=15, aes(colour = frequency)) + 
+    #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
+    scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
+    scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
+    scale_x_continuous(limits=c(1, 100), breaks=seq(1,100,1)) +
+    geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
+    geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
+    ggtitle(paste("Replication",i))+
+    theme_bw() + theme(axis.text=element_text(size=10),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+  indice<-indice+1
+}
+setEPS()
+postscript("15Examples_Model3_100_cluster4_hierarchicalClust_average_100rounds.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
+dev.off()
+
+################################
+
+
+
 
 
 ## I print a replication as an example
@@ -852,12 +885,12 @@ ggplot(dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=contributi
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel3[dataModel3$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -895,12 +928,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -919,12 +952,12 @@ ggplot(dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -937,9 +970,9 @@ set.seed(21)
 
 ########### MODEL D: Bayesian and non-bayesian agents with data-based noninformative prior ############################################
 
-run_model4 <- function(myreplications=1, N=100) {
+run_model4 <- function(myreplications=1, N=100,r=14) {
   decisiones <- c(0,2,4,6,8,10) # For figure axis
-  final_round <- 14             # Number of rounds
+  final_round <- r             # Number of rounds
   #N <- 100                     # Number of agents
   n_prime=N-round(percentage_full_def,2)*100-round(percentage_full_cop,2)*100 # Bayesian agents
   round(percentage_full_def*N,2)*100 #Full defector
@@ -1000,7 +1033,7 @@ run_model4 <- function(myreplications=1, N=100) {
 
 ############# N=100 ###########
 replications<-100
-dataModel4 <- run_model4(replications,100)
+dataModel4 <- run_model4(replications,100,30)
 dataModel4_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel4_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -1012,7 +1045,7 @@ colnames(dataModel4_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4
 
 ############# N=1000 ###########
 replications<-100
-dataModel4_1000 <- run_model4(replications,1000)
+dataModel4_1000 <- run_model4(replications,1000,30)
 dataModel4_1000_ <- data.frame(matrix(ncol = 84, nrow = 0))
 colnames(dataModel4_1000_) <- c('1d0','1d2','1d4','1d6','1d8','1d10','2d0','2d2','2d4','2d6','2d8','2d10','3d0','3d2','3d4','3d6','3d8','3d10','4d0','4d2','4d4','4d6','4d8','4d10','5d0','5d2','5d4','5d6','5d8','5d10','6d0','6d2','6d4','6d6','6d8','6d10','7d0','7d2','7d4','7d6','7d8','7d10','8d0','8d2','8d4','8d6','8d8','8d10','9d0','9d2','9d4','9d6','9d8','9d10','10d0','10d2','10d4','10d6','10d8','10d10','11d0','11d2','11d4','11d6','11d8','11d10','12d0','12d2','12d4','12d6','12d8','12d10','13d0','13d2','13d4','13d6','13d8','13d10','14d0','14d2','14d4','14d6','14d8','14d10')
 
@@ -1035,7 +1068,7 @@ ggplot(dataModel4, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 setEPS()
@@ -1049,7 +1082,7 @@ ggplot(dataModel4_1000, aes(x=round, y=contribution)) +
   #geom_line(data=distributions, aes(x=round, y=mean))+
   #geom_point(data=distributions, aes(x=round, y=mean))+
   #geom_text(data=distributions, aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
-  theme_bw() +theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme_bw() +theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -1086,12 +1119,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -1101,6 +1134,7 @@ dev.off()
 
 #### Summary of 15 replications for the Supplementary Material
 
+clusterdata <- dataModel4[dataModel4$replicationNumber %in% which(clusters==4),]
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
 
@@ -1113,16 +1147,16 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
-postscript("15Examples_Model4_100_cluster6_hierarchicalClust_average.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
+postscript("15Examples_Model4_100_cluster4_hierarchicalClust_average_30rounds.eps", height=4*5, width=8.5*3, family="serif",horizontal=FALSE)
 grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,15), 5, 3, byrow=TRUE))
 dev.off()
 
@@ -1137,12 +1171,12 @@ ggplot(dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=contributi
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel4[dataModel4$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -1180,12 +1214,12 @@ for (i in replication_number){
     #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
     scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
     scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-    scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+    scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
     geom_line(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_point(data=sample[sample$replicationNumber==i,], aes(x=round, y=mean))+
     geom_text(data=sample[sample$replicationNumber==i,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)+
     ggtitle(paste("Replication",i))+
-    theme_bw() + theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
+    theme_bw() + theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=18), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank(), plot.title=element_text(family='', colour='black', size=14, margin=margin(t=0,b=0, l=50))) + xlab("Round")+ ylab("Contribution")+ theme(legend.position = "none")
   indice<-indice+1
 }
 setEPS()
@@ -1204,12 +1238,12 @@ ggplot(dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
   scale_colour_gradient2(low = "yellow", mid= "red", high = "black",midpoint = 0.5, limits=c(0,1)) + 
   scale_y_continuous(limits=c(-0.5, 10.5), breaks=c(0, 2, 4, 6, 8, 10))+
-  scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
+  scale_x_continuous(limits=c(1, 30), breaks=seq(1,30,1)) +
   geom_line(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_text(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
 theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  theme(axis.text=element_text(size=16),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
