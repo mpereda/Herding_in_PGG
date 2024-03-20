@@ -815,7 +815,7 @@ grid.arrange(grobs=lista_plots, layout_matrix= matrix(seq(1,32), 8, 4, byrow=TRU
 dev.off()
 
 #### Summary of 15 replications for the Supplementary Material
-
+clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==4),]
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
 
