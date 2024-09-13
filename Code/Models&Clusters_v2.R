@@ -2,7 +2,7 @@
 
 
 rm(list=ls(all=TRUE))
-myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/histogramsOfHistograms"
+myWD <- "/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PRE_PGG_Bayesian/PGG_modelito_v2_bayesiano_publicado/Paper/NuevasFigurasTextoGrande"
 
 setwd(myWD)
 
@@ -113,7 +113,7 @@ clusters <- cutree(hclust_avg, k = 6)
 table(clusters)
 
 
-clusterdata <- dataModel1[dataModel1$replicationNumber %in% which(clusters==2),]
+clusterdata <- dataModel1[dataModel1$replicationNumber %in% which(clusters==1),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -171,10 +171,10 @@ dev.off()
 
 ## I print a replication as an example
 unique(clusterdata$replicationNumber)
-rep=12
+rep=9
 
 setEPS()
-postscript("Model1_100_cluster2_rep12.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model1_100_cluster1_rep9.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -183,9 +183,9 @@ ggplot(dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=contributi
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel1[dataModel1$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel1[dataModel1$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel1[dataModel1$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+  legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -298,9 +298,9 @@ ggplot(dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel1_1000[dataModel1_1000$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+  legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -324,7 +324,7 @@ set.seed(17)
 
 ########### MODEL B: Bayesian agents with data-based informative prior ############################################
 
-data<-read.csv("/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PGG_modelito_v2_bayesiano/paraMiPaper/datos/2017A2ECOCOOPANSA01ONL0000ESPMAD.csv") #DATA FROM ZENODO https://zenodo.org/record/2590686
+data<-read.csv("/Users/mariapereda/Dropbox/UPM/investigacion/Mis_trabajos_en_curso/PRE_PGG_Bayesian/PGG_modelito_v2_bayesiano_publicado/Paper/datos/2017A2ECOCOOPANSA01ONL0000ESPMAD.csv") #DATA FROM ZENODO https://zenodo.org/record/2590686
 #Create participant IDs combining participant_ID and treatment
 data$id <- paste(data$treatment,data$participant_id)
 dataset <- data[data$player_alive==1, ]
@@ -524,7 +524,7 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[10]
+rep=77
 
 setEPS()
 postscript("Model2_100_cluster2_rep77.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
@@ -536,9 +536,9 @@ ggplot(dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=contributi
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel2[dataModel2$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel2[dataModel2$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel2[dataModel2$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+                     legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -616,7 +616,7 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[1]
+rep=36
 
 setEPS()
 postscript("Model2_1000_cluster2_rep36.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
@@ -628,9 +628,9 @@ ggplot(dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel2_1000[dataModel2_1000$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+                     legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -787,7 +787,7 @@ clusters <- cutree(hclust_avg, k = 4)
 table(clusters)
 
 
-clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==4),]
+clusterdata <- dataModel3[dataModel3$replicationNumber %in% which(clusters==1),]
 
 sample_indexes <- sample(unique(clusterdata$replicationNumber), min(32,length(unique(clusterdata$replicationNumber))))
 sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
@@ -843,10 +843,10 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[1]
+rep=82
 
 setEPS()
-postscript("Model3_100_cluster2_rep90.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model3_100_cluster1_rep82.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -855,9 +855,9 @@ ggplot(dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=contributi
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel3[dataModel3$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel3[dataModel3$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel3[dataModel3$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+                     legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -879,7 +879,7 @@ clusters <- cutree(hclust_avg, k = 4)
 table(clusters)
 
 
-clusterdata <- dataModel3_1000[dataModel3_1000$replicationNumber %in% which(clusters==4),]
+clusterdata <- dataModel3_1000[dataModel3_1000$replicationNumber %in% which(clusters==1),]
 
 #### Summary of 15 replications for the Supplementary Material
 
@@ -910,10 +910,10 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[1]
+rep=71
 
 setEPS()
-postscript("Model3_1000_cluster4_rep43.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model3_1000_cluster1_rep71.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -922,11 +922,10 @@ ggplot(dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel3_1000[dataModel3_1000$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+                     legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
-
 
 
 
@@ -1128,7 +1127,7 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[2]
+rep=61
 
 setEPS()
 postscript("Model4_100_cluster1_rep61.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
@@ -1140,9 +1139,9 @@ ggplot(dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=contributi
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel4[dataModel4$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel4[dataModel4$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel4[dataModel4$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=26),axis.title=element_text(size=28),legend.text=element_text(size=26),
+  legend.title=element_text(size=26, margin = margin(b = 26)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
 
 
@@ -1164,7 +1163,9 @@ clusters <- cutree(hclust_avg, k = 2)
 table(clusters)
 
 
-clusterdata <- dataModel4_1000[dataModel4_1000$replicationNumber %in% which(clusters==2),]
+clusterdata <- dataModel4_1000[dataModel4_1000$replicationNumber %in% which(clusters==1),]
+sample_indexes <- sample(unique(clusterdata$replicationNumber), min(15,length(unique(clusterdata$replicationNumber))))
+sample <- clusterdata[clusterdata$replicationNumber %in% sample_indexes, ]
 
 #### Summary of 15 replications for the Supplementary Material
 
@@ -1195,10 +1196,10 @@ dev.off()
 
 
 ## I print a replication as an example
-rep=sample_indexes[1]
+rep=53
 
 setEPS()
-postscript("Model4_1000_cluster2.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
+postscript("Model4_1000_cluster.eps", height=4, width=8.5, family="serif",horizontal=FALSE)
 ggplot(dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=contribution)) + 
   geom_point(size=20, shape=15, aes(colour = frequency)) + 
   #scale_colour_gradientn(colours = heat.colors(10), trans = "reverse") +
@@ -1207,11 +1208,10 @@ ggplot(dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=
   scale_x_continuous(limits=c(1, 14), breaks=c(1, 2, 3, 4, 5, 6,7,8,9,10,11,12,13,14)) +
   geom_line(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=mean))+
   geom_point(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(x=round, y=mean))+
-  geom_text(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(label=round(mean,2),y=0.5+mean,x=round), cex=3)
-theme_bw() +
-  theme(axis.text=element_text(size=20),axis.title=element_text(size=22),legend.text=element_text(size=14), legend.title=element_text(size=14), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
+  geom_text(data=dataModel4_1000[dataModel4_1000$replicationNumber==rep,], aes(label=round(mean,1),y=0.8+mean,x=round), cex=6)+
+  theme_bw() + theme(axis.text=element_text(size=22),axis.title=element_text(size=24),legend.text=element_text(size=22),
+                     legend.title=element_text(size=22, margin = margin(b = 22)), panel.border = element_blank(), panel.grid.major = element_blank(),panel.grid.minor = element_blank()) + xlab("Round")+ ylab("Contribution")
 dev.off()
-
 
 
 #### Export data for the repositoy
