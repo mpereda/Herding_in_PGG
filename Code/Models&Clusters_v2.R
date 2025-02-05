@@ -40,7 +40,7 @@ run_model1 <- function(myreplications=2, N=100) {
   medias_por_ronda <- c(0,0,0,0,0,0)
   
   while(myreplications>0){
-    vector_alfa= vector_alfa_inicial
+    vector_alfa= vector_alfa_inicial # rcat normaliza automáticamente
     for (t in 1:final_round){
       # Agents decide
       x<-rcat(N, vector_alfa)
